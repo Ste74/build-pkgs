@@ -1,5 +1,5 @@
-name: 'Manjaro Kernel Action'
-description: 'Builds Manjaro Kernels'
+name: 'Manjaro Pkg Action'
+description: 'Builds Manjaro pkgs'
 
 inputs:
   gitlab-pw:
