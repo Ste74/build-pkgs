@@ -138,7 +138,7 @@ runs:
       shell: bash
       run: |
         PKG=$(echo ${GITHUB_REPOSITORY} | cut -d'/' -f2)
-        sudo git clone https://ste74:${{ inputs.gitlab-pw }}@gitlab.manjaro.org/packages/community/${PKG}.git
+        sudo git clone https://'ste74':'${{ inputs.gitlab-pw }}'@gitlab.manjaro.org/packages/community/${PKG}.git
         sudo git config --global user.name "Stefano Capitani"
         sudo git config --global user.email "stefano@manjaro.org"
         echo "PKG=${PKG}" >>$GITHUB_ENV
