@@ -2,6 +2,9 @@ name: 'Manjaro Pkg Action'
 description: 'Builds Manjaro pkgs'
 
 inputs:
+  user-mail:
+    description: 'Manjaro user mail'
+    required: true
   gitlab-user:
     description: 'gitalb user name'
     required: true
