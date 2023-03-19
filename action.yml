@@ -137,19 +137,19 @@ runs:
     - id: clone_repo
       shell: bash
       run: |
-        KERNEL=$(echo ${GITHUB_REPOSITORY} | cut -d'/' -f2)
+        PKG=$(echo ${GITHUB_REPOSITORY} | cut -d'/' -f2)
         if [[ "${{ inputs.realtime }}" == "true" ]]; then
-          sudo git clone https://${{ inputs.gitlab-server-user }}:${{ inputs.gitlab-pw }}@gitlab.manjaro.org/packages/community/realtime-kernels/${KERNEL}.git
+          sudo git clone https://${{ inputs.gitlab-server-user }}:${{ inputs.gitlab-pw }}@gitlab.manjaro.org/packages/community/realtime-PKGs/${PKG}.git
         else
-          sudo git clone https://${{ inputs.gitlab-server-user }}:${{ inputs.gitlab-pw }}@gitlab.manjaro.org/packages/core/${KERNEL}.git
+          sudo git clone https://${{ inputs.gitlab-server-user }}:${{ inputs.gitlab-pw }}@gitlab.manjaro.org/packages/core/${PKG}.git
         fi
         sudo git config --global user.name "Manjaro Build Server"
         sudo git config --global user.email "build@manjaro.org"
-        echo "KERNEL=${KERNEL}" >>$GITHUB_ENV
-        if [[ "${{ inputs.bump-kernel }}" == "true" ]]; then
-          sudo chown -R ${UID}:${UID} ${KERNEL}
-          cd ${KERNEL}
-          repover=$(sudo pacman -Syi ${KERNEL} | grep Version | rev | cut -d' ' -f1 | rev | cut -d- -f1)
+        echo "PKG=${PKG}" >>$GITHUB_ENV
+        if [[ "${{ inputs.bump-PKG }}" == "true" ]]; then
+          sudo chown -R ${UID}:${UID} ${PKG}
+          cd ${PKG}
+          repover=$(sudo pacman -Syi ${PKG} | grep Version | rev | cut -d' ' -f1 | rev | cut -d- -f1)
           if [[ $repover == *rc* ]]; then
             ver_maj=$(echo $repover | cut -d'r' -f1)
             _rc=$(echo ${repover} | cut -d'c' -f2)
@@ -174,7 +174,7 @@ runs:
     - name: build_kernel
       shell: bash
       run: |
-        sudo chrootbuild -p ${{ env.KERNEL }} -b ${{ inputs.branch }}
+        sudo chrootbuild -p ${{ env.PKG }} -b ${{ inputs.branch }}
         if [ -z "${{ inputs.gpg-key }}" ] || [ -z "${{ inputs.gpg-passphrase }}" ]; then
           echo "## gpg credentials not provided. Skip signing."
         else
@@ -187,7 +187,7 @@ runs:
     - id: publish_kernel
       shell: bash -O extglob {0}
       run: |
-        _chrpkb=/var/lib/chrootbuild/build/${{ env.KERNEL }}/PKGBUILD
+        _chrpkb=/var/lib/chrootbuild/build/${{ env.PKG }}/PKGBUILD
         _ver=$(grep ^pkgver= ${_chrpkb} | cut -d'=' -f2)
         _rel=$(grep ^pkgrel= ${_chrpkb} | cut -d'=' -f2)
         _tag=${_ver}-${_rel}
@@ -202,7 +202,7 @@ runs:
     - name: create kernel btf
       shell: bash -O extglob {0}
       run: |
-        source ${{ env.KERNEL }}/PKGBUILD
+        source ${{ env.PKG }}/PKGBUILD
         for p in ${pkgname[@]}; do
           name=$(find . -name ${p}-${{ env.TAG }}*.zst)
           arch=$(echo ${name} | rev | cut -d- -f1 | rev | cut -d. -f1)
@@ -232,7 +232,7 @@ runs:
             [[ $m == "spl_zfs" ]] && _m=zfs
             [[ $m == "virtualbox-modules" ]] && _m=virtualbox-host-modules
             cd $m
-            repover=$(sudo pacman -Syi ${{ env.KERNEL }}-$_m | grep Version | rev | cut -d' ' -f1 | rev)
+            repover=$(sudo pacman -Syi ${{ env.PKG }}-$_m | grep Version | rev | cut -d' ' -f1 | rev)
             _reporel=$(echo $repover | cut -d- -f2)
             _gitrel=$(grep "^pkgrel=" PKGBUILD | cut -d= -f2)
             if [[ "${{ inputs.bump-modules }}" == "git" ]]; then
@@ -266,8 +266,8 @@ runs:
     - id: build_modules
       shell: bash
       run: |
-        sudo chrootbuild -K modules -i "${{ env.KERNEL }}-${{ env.TAG }}*.zst" -i "${{ env.KERNEL }}-headers*.zst" -b ${{ inputs.branch }}
-        sudo rm ./${{ env.KERNEL }}-${{ env.TAG }}-x86_64.pkg.tar.zst{,.sig} ./${{ env.KERNEL }}-headers-${{ env.TAG }}-x86_64.pkg.tar.zst{,.sig}
+        sudo chrootbuild -K modules -i "${{ env.PKG }}-${{ env.TAG }}*.zst" -i "${{ env.PKG }}-headers*.zst" -b ${{ inputs.branch }}
+        sudo rm ./${{ env.PKG }}-${{ env.TAG }}-x86_64.pkg.tar.zst{,.sig} ./${{ env.PKG }}-headers-${{ env.TAG }}-x86_64.pkg.tar.zst{,.sig}
         if [ -z "${{ inputs.gpg-key }}" ] || [ -z "${{ inputs.gpg-passphrase }}" ]; then 
           echo "## gpg credentials not provided. Skip signing."
         else
