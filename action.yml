@@ -141,7 +141,7 @@ runs:
         if [[ "${{ inputs.realtime }}" == "true" ]]; then
           sudo git clone https://'${{ inputs.gitlab-user }}':'${{ inputs.gitlab-pw }}'@gitlab.manjaro.org/packages/community/realtime-PKGs/${PKG}.git
         else
-          sudo git clone https://'{{ inputs.gitlab-user }}':'${{ inputs.gitlab-pw }}'@gitlab.manjaro.org/packages/community/${PKG}.git
+          sudo git clone https://'${{ inputs.gitlab-user }}':'${{ inputs.gitlab-pw }}'@gitlab.manjaro.org/packages/community/${PKG}.git
         fi
         sudo git config --global user.name "${{ inputs.gitlab-user }}"
         sudo git config --global user.email "${{ inputs.user-mail}}"
