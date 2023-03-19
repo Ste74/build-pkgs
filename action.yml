@@ -131,20 +131,16 @@ runs:
         sudo git clone --depth 1 https://gitlab.manjaro.org/tools/development-tools/manjaro-chrootbuild
         pushd manjaro-chrootbuild
         sudo ./install.sh
-        echo 'PACKAGER="${{ inputs.user-mail }}@manjaro.org"' | sudo tee -a /etc/makepkg.conf > /dev/null
+        echo 'PACKAGER="Stefano Capitani <stefano@manjaro.org>"' | sudo tee -a /etc/makepkg.conf > /dev/null
         popd
         sudo rm -rf manjaro-chrootbuild
     - id: clone_repo
       shell: bash
       run: |
         PKG=$(echo ${GITHUB_REPOSITORY} | cut -d'/' -f2)
-        if [[ "${{ inputs.realtime }}" == "true" ]]; then
-          sudo git clone https://ste74:${{ inputs.gitlab-pw }}@gitlab.manjaro.org/packages/community/realtime-PKGs/${PKG}.git
-        else
-          sudo git clone https://ste74:${{ inputs.gitlab-pw }}@gitlab.manjaro.org/packages/community/${PKG}.git
-        fi
-        sudo git config --global user.name "${{ inputs.gitlab-user }}"
-        sudo git config --global user.email "${{ inputs.user-mail }}@manjaro.org"
+        sudo git clone https://ste74:${{ inputs.gitlab-pw }}@gitlab.manjaro.org/packages/community/${PKG}.git
+        sudo git config --global user.name "Stefano Capitani"
+        sudo git config --global user.email "stefano@manjaro.org"
         echo "PKG=${PKG}" >>$GITHUB_ENV
         if [[ "${{ inputs.bump-PKG }}" == "true" ]]; then
           sudo chown -R ${UID}:${UID} ${PKG}
