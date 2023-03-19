@@ -2,6 +2,9 @@ name: 'Manjaro Pkg Action'
 description: 'Builds Manjaro pkgs'
 
 inputs:
+  gitlab-user:
+    description: 'gitalb user name'
+    required: true
   gitlab-pw:
     description: 'gitlab password'
     required: true
@@ -14,17 +17,17 @@ inputs:
     required: false
     default: "unstable"
   bump-kernel:
-    description: 'get kernel repo version and buld higher dot release'
+    description: 'get pkg repo version and buld higher dot release'
     required: false
     default: false
   bump-modules:
     description: 'bump modules pkgrel in PKGBUILD. Possible values: git, repo, none'
     required: false
     default: "none"
-  realtime:
-    description: 'is realtime-kernel'
-    required: false
-    default: false
+  # realtime:
+  #  description: 'is realtime-kernel'
+  #  required: false
+  #  default: false
   gpg-key:
     description: 'base64 encoded gpg secret key'
     required: true
@@ -125,7 +128,7 @@ runs:
         sudo git clone --depth 1 https://gitlab.manjaro.org/tools/development-tools/manjaro-chrootbuild
         pushd manjaro-chrootbuild
         sudo ./install.sh
-        echo 'PACKAGER="Manjaro Build Server <build@manjaro.org>"' | sudo tee -a /etc/makepkg.conf > /dev/null
+        echo 'PACKAGER="${{ inputs.manjaro_mail }}"' | sudo tee -a /etc/makepkg.conf > /dev/null
         popd
         sudo rm -rf manjaro-chrootbuild
     - id: clone_repo
@@ -133,9 +136,9 @@ runs:
       run: |
         KERNEL=$(echo ${GITHUB_REPOSITORY} | cut -d'/' -f2)
         if [[ "${{ inputs.realtime }}" == "true" ]]; then
-          sudo git clone https://mjr-build-server:${{ inputs.gitlab-pw }}@gitlab.manjaro.org/packages/community/realtime-kernels/${KERNEL}.git
+          sudo git clone https://${{ inputs.gitlab-server-user }}:${{ inputs.gitlab-pw }}@gitlab.manjaro.org/packages/community/realtime-kernels/${KERNEL}.git
         else
-          sudo git clone https://mjr-build-server:${{ inputs.gitlab-pw }}@gitlab.manjaro.org/packages/core/${KERNEL}.git
+          sudo git clone https://${{ inputs.gitlab-server-user }}:${{ inputs.gitlab-pw }}@gitlab.manjaro.org/packages/core/${KERNEL}.git
         fi
         sudo git config --global user.name "Manjaro Build Server"
         sudo git config --global user.email "build@manjaro.org"
@@ -217,9 +220,9 @@ runs:
         pushd modules
         for m in $(cat ../modules.list); do
           if [[ "${{ inputs.realtime }}" == "true" ]]; then
-            sudo git clone "https://mjr-build-server:${{ inputs.gitlab-pw }}@gitlab.manjaro.org/packages/community/realtime-kernels/${{ env.KERNEL }}-extramodules/$m.git"
+            sudo git clone "https://${{ inputs.gitlab-server-user }}:${{ inputs.gitlab-pw }}@gitlab.manjaro.org/packages/community/realtime-kernels/${{ env.KERNEL }}-extramodules/$m.git"
           else
-            sudo git clone "https://mjr-build-server:${{ inputs.gitlab-pw }}@gitlab.manjaro.org/packages/extra/${{ env.KERNEL }}-extramodules/$m.git"
+            sudo git clone "https://${{ inputs.gitlab-server-user }}:${{ inputs.gitlab-pw }}@gitlab.manjaro.org/packages/extra/${{ env.KERNEL }}-extramodules/$m.git"
           fi
           if [[ ! "${{ inputs.bump-modules }}" == "none" ]]; then
             _m=$m
