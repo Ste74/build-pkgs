@@ -141,7 +141,7 @@ runs:
         if [[ "${{ inputs.realtime }}" == "true" ]]; then
           sudo git clone https://${{ inputs.gitlab-server-user }}:${{ inputs.gitlab-pw }}@gitlab.manjaro.org/packages/community/realtime-PKGs/${PKG}.git
         else
-          sudo git clone https://${{ inputs.gitlab-server-user }}:${{ inputs.gitlab-pw }}@gitlab.manjaro.org/packages/core/${PKG}.git
+          sudo git clone https://${{ inputs.gitlab-server-user }}:${{ inputs.gitlab-pw }}@gitlab.manjaro.org/packages/community/${PKG}.git
         fi
         sudo git config --global user.name "Manjaro Build Server"
         sudo git config --global user.email "build@manjaro.org"
@@ -210,7 +210,7 @@ runs:
           btf=${file}.yml
           echo "sha256_pkg: $(sha256sum ${name} | cut -d' ' -f1)" > ${btf}
           echo "sha256_sig: $(sha256sum ${name}.sig | cut -d' ' -f1)" >> ${btf}
-          echo "repository: core" >> ${btf}
+          echo "repository: community" >> ${btf}
           echo "branch: ${{ inputs.branch }}" >> ${btf}
           tar -czvf ${file}.tar ./${file}*.zst ./${file}*.sig ./${btf}
         done
