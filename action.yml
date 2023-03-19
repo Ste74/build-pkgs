@@ -27,10 +27,10 @@ inputs:
     description: 'bump modules pkgrel in PKGBUILD. Possible values: git, repo, none'
     required: false
     default: "none"
-   realtime:
-    description: 'is realtime-kernel'
-    required: false
-    default: false
+  #realtime:
+  #  description: 'is realtime-kernel'
+  #  required: false
+  #  default: false
   gpg-key:
     description: 'base64 encoded gpg secret key'
     required: true
