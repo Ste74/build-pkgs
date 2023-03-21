@@ -36,7 +36,7 @@ inputs:
     required: true
   gpg-passphrase:
     description: 'passphrase for gpg key'
-    required: true
+    required: false
   boxit-host:
     description: 'boxit login address'
     required: false
