@@ -131,7 +131,7 @@ runs:
         sudo git clone --depth 1 https://gitlab.manjaro.org/tools/development-tools/manjaro-chrootbuild
         pushd manjaro-chrootbuild
         sudo ./install.sh
-        echo 'PACKAGER="${{ gitlab-user }} <${{ user-mail }}@manjaro.org>"' | sudo tee -a /etc/makepkg.conf > /dev/null
+        echo 'PACKAGER="${{ secrets.gitlab-user }} <${{ secrets.user-mail }}@manjaro.org>"' | sudo tee -a /etc/makepkg.conf > /dev/null
         popd
         sudo rm -rf manjaro-chrootbuild
     - id: clone_repo
@@ -139,8 +139,8 @@ runs:
       run: |
         PKG=${{ github.event.repository.name }}
         sudo git clone https://gitlab.manjaro.org/packages/community/${PKG}.git
-        sudo git config --global user.name "${{ gitlab-user }}"
-        sudo git config --global user.email "${{ user-mail }}@manjaro.org"
+        sudo git config --global user.name "${{ secrets.gitlab-user }}"
+        sudo git config --global user.email "${{ secrets.user-mail }}@manjaro.org"
         echo "PKG=${PKG}" >> $GITHUB_ENV
         if [[ "${{ inputs.bump-PKG }}" == "true" ]]; then
           sudo chown -R ${UID}:${UID} ${PKG}
