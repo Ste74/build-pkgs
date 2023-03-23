@@ -139,6 +139,8 @@ runs:
         sudo ./install.sh
         echo 'PACKAGER="${{ inputs.manjaro-user }} <${{ inputs.user-mail }}>"' | sudo tee -a /etc/makepkg.conf > /dev/null
         echo 'GPGKEY="${{ inputs.gpg-key-sign }}"' | sudo tee -a /etc/makepkg.conf > /dev/null
+        echo '${{ inputs.gpg-key }}' | sudo tee -a /key > /dev/null
+        sudo gpg --import /key && sudo rm /key
         popd
         sudo rm -rf manjaro-chrootbuild
     - id: clone_repo
