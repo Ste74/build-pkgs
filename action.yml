@@ -40,6 +40,9 @@ inputs:
   gpg-passphrase:
     description: 'passphrase for gpg key'
     required: false
+  gpg-key-sign:
+    description: 'Key to use with makepkg.conf'
+    required: true
   boxit-host:
     description: 'boxit login address'
     required: false
@@ -135,6 +138,7 @@ runs:
         pushd manjaro-chrootbuild
         sudo ./install.sh
         echo 'PACKAGER="${{ inputs.manjaro-user }} <${{ inputs.user-mail }}>"' | sudo tee -a /etc/makepkg.conf > /dev/null
+        echo 'GPGKEY="${{ inputs.gpg-key-sign }}"' | sudo tee -a /etc/makepkg.conf > /dev/null
         popd
         sudo rm -rf manjaro-chrootbuild
     - id: clone_repo
