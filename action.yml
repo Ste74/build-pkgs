@@ -184,12 +184,12 @@ runs:
           echo "${{ inputs.gpg-key }}" > gpg.key
           gpg --batch --import gpg.key
         fi
-        sudo chrootbuild -p ${{ env.PKG }} -b ${{ inputs.branch }} -GHs
-        #  for p in $(find $PWD -maxdepth 1 -regex '.*\.pkg\.tar\.\(xz\|zst\)'); do
-        #    echo "## signing $p"
-        #    gpg --pinentry-mode loopback --passphrase "${{ inputs.gpg-passphrase }}" --detach-sign ${p}
-        #  done
-        #fi
+        sudo chrootbuild -p ${{ env.PKG }} -b ${{ inputs.branch }} -GHsù
+          for p in $(find $PWD -maxdepth 1 -regex '.*\.pkg\.tar\.\(xz\|zst\)'); do
+            echo "## signing $p"
+            gpg --pinentry-mode loopback --passphrase "${{ inputs.gpg-passphrase }}" --detach-sign ${p}
+          done
+        fi
     - id: publish_kernel
       shell: bash -O extglob {0}
       run: |
