@@ -180,7 +180,8 @@ runs:
         if [ -z "${{ inputs.gpg-key }}" ] || [ -z "${{ inputs.gpg-passphrase }}" ]; then
           echo "## gpg credentials not provided. Skip signing."
         else
-          echo "${{ inputs.gpg-key }}" | base64 --decode | gpg --batch --import # &>/dev/null
+          echo "${{ inputs.gpg-key }}" > gpg.key
+          gpg --import gpg.key
         fi
         sudo chrootbuild -p ${{ env.PKG }} -b ${{ inputs.branch }} -GHs
         #  for p in $(find $PWD -maxdepth 1 -regex '.*\.pkg\.tar\.\(xz\|zst\)'); do
