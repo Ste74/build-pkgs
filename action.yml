@@ -182,7 +182,7 @@ runs:
         else
           export GPG_TTY=$(tty)
           echo "${{ inputs.gpg-key }}" > gpg.key
-          gpg --import gpg.key
+          gpg --batch --import gpg.key
         fi
         sudo chrootbuild -p ${{ env.PKG }} -b ${{ inputs.branch }} -GHs
         #  for p in $(find $PWD -maxdepth 1 -regex '.*\.pkg\.tar\.\(xz\|zst\)'); do
