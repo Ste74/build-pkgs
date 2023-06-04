@@ -196,33 +196,12 @@ runs:
         _ver=$(grep ^pkgver= ${_chrpkb} | cut -d'=' -f2)
         _rel=$(grep ^pkgrel= ${_chrpkb} | cut -d'=' -f2)
         _tag=${_ver}-${_rel}
-        echo "$_ver"
-        echo "$_rel"
-        echo ${{ github.event.repository.name }}-${_tag}
-        sudo zip ${{ github.event.repository.name }}-${_tag}.zip ./*.zst ./*sig
+        sudo zip ${PKG}-${_tag}.zip ./*.zst ./*sig
         echo ${{ github.token }} | gh auth login --with-token
         gh release create ${_tag} --title ${_tag} --repo ${{ github.repository }} --notes "automated release" || echo "release already exists"
         GITHUB_LINK=https://github.com/${GITHUB_REPOSITORY}/releases/download/${_tag}
-        gh release upload ${_tag} --repo ${GITHUB_REPOSITORY} --clobber ./${{ github.event.repository.name }}-${_tag}.zip
+        gh release upload ${_tag} --repo ${GITHUB_REPOSITORY} --clobber ./${PKG}-${_tag}.zip
         echo "TAG=${_tag}" >>$GITHUB_ENV
         echo "GITHUB_LINK=${GITHUB_LINK}" >>$GITHUB_ENV
         sudo rm -rf /var/lib/chrootbuild
-      #shell: bash
-      #run: |
-      #  mkdir -p /home/runner/.ssh
-      #  touch /home/runner/.ssh/github_actions
-      #  chmod 600 /home/runner/.ssh/github_actions
-      #  ssh-agent -a /tmp/ssh_agent.sock > /dev/null
-    #- name: push to boxit
-    #  shell: bash -O extglob {0}
-    #  env:
-    #    SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-    #  run: |
-    #    if [ -z "${{ inputs.boxit-host }}" ] || [ -z "${{ inputs.boxit-target }}" ] || [ -z "${{ inputs.ssh-key }}" ]; then 
-    #      echo "## not all credentials given for boxit push"
-    #      exit 0
-    #    fi
-    #    ssh-keyscan -t rsa ${{ inputs.boxit-host }} >> /home/runner/.ssh/known_hosts
-    #    echo "${{ inputs.ssh-key }}" >> /home/runner/.ssh/github_actions
-    #    ssh-add /home/runner/.ssh/github_actions
-    #    rsync -vaPzz --stats -e ssh ./*tar ${{ inputs.boxit-target }}
+
