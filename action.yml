@@ -22,18 +22,6 @@ inputs:
     description: 'branch to build against'
     required: false
     default: "unstable"
-  bump-kernel:
-    description: 'get pkg repo version and buld higher dot release'
-    required: false
-    default: false
-  bump-modules:
-    description: 'bump modules pkgrel in PKGBUILD. Possible values: git, repo, none'
-    required: false
-    default: "none"
-  realtime:
-    description: 'is realtime-kernel'
-    required: false
-    default: false
   gpg-key:
     description: 'base64 encoded gpg secret key'
     required: true
@@ -43,12 +31,6 @@ inputs:
   gpg-key-sign:
     description: 'Key to use with makepkg.conf'
     required: true
-  boxit-host:
-    description: 'boxit login address'
-    required: false
-  boxit-target:
-    description: 'boxit rsync target'
-    required: false
   ssh-key:
     description: 'boxit user ssh private key'
     required: false
