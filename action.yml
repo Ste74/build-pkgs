@@ -31,9 +31,9 @@ inputs:
   gpg-key-sign:
     description: 'Key to use with makepkg.conf'
     required: true
-  ssh-key:
-    description: 'boxit user ssh private key'
-    required: false
+  repo-src:
+    description: 'PKGBUILD source'
+    required: true
 
 runs:
   using: "composite"
@@ -128,7 +128,7 @@ runs:
       run: |
         PKG=${{ github.event.repository.name }}
         #sudo git clone https://gitlab.manjaro.org/packages/community/${PKG}.git
-        sudo git clone https://gitlab.archlinux.org/archlinux/packaging/packages/${PKG}.git
+        sudo git clone ${{ repo-src }}.git
         sudo git config --global user.name "${{ inputs.gitlab-user }}"
         sudo git config --global user.email "${{ inputs.user-mail }}"
         echo "PKG=${PKG}" >> $GITHUB_ENV
