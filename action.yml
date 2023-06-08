@@ -128,8 +128,8 @@ runs:
       run: |
         PKG=${{ github.event.repository.name }}
         #sudo git clone https://gitlab.manjaro.org/packages/community/${PKG}.git
-        sudo git clone ${{ repo-src }}.git
-        sudo git config --global user.name "${{ inputs.gitlab-user }}"
+        sudo git clone "${{ inputs.repo-src }}".git
+        sudo git config --global user.name "${{ inputs.gitlab-user }}" 
         sudo git config --global user.email "${{ inputs.user-mail }}"
         echo "PKG=${PKG}" >> $GITHUB_ENV
         #if [[ "${{ inputs.bump-PKG }}" == "true" ]]; then
