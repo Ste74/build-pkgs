@@ -179,6 +179,8 @@ runs:
         _ver=$(grep ^pkgver= ${_chrpkb} | cut -d'=' -f2)
         _rel=$(grep ^pkgrel= ${_chrpkb} | cut -d'=' -f2)
         _tag=${_ver}-${_rel}
+        echo ${_tag}
+        sudo ls
         sudo zip ${PKG}-${_tag}.zip ./*.zst ./*sig
         echo ${{ github.token }} | gh auth login --with-token
         gh release create ${_tag} --title ${_tag} --repo ${{ github.repository }} --notes "automated release" || echo "release already exists"
