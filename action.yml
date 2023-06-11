@@ -16,12 +16,11 @@ inputs:
     required: true
   build-mirror:
     description: 'pacman-mirror to be used by manjaro-chrootbuild'
-    required: false
+    required: true
     default: 'https://mirrors.manjaro.org/repo'
   branch:
     description: 'branch to build against'
     required: false
-    default: "unstable"
   gpg-key:
     description: 'base64 encoded gpg secret key'
     required: true
