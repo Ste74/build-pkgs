@@ -111,6 +111,8 @@ runs:
         popd
         sudo pacman-key --init
         sudo pacman-key --populate archlinux manjaro
+        #gpg --keyserver keyserver.ubuntu.com --search-keys Manjaro Build Server
+        sudo gpg --recv-keys 3B794DE6D4320FCE594F4171279E7CF5D8D56EC8 
         sudo pacman-key --refresh-keys
         #sudo rm -rf archlinux-keyring
     - id: install_manjaro-chrootbuild
