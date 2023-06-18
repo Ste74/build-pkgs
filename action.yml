@@ -111,7 +111,6 @@ runs:
         popd
         sudo pacman-key --init
         sudo pacman-key --populate archlinux manjaro
-        sudo pacman-key --refresh-keys
         sudo rm -rf archlinux-keyring
     - id: install_manjaro-chrootbuild
       shell: bash
