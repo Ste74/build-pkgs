@@ -125,9 +125,11 @@ runs:
     - id: clone_repo
       shell: bash
       run: |
-        PKG=${{ github.event.repository.name }}
+        #PKG=${{ github.event.repository.name }}
+        PKG=firefox-kde-opensuse
         #sudo git clone https://gitlab.manjaro.org/packages/community/${PKG}.git
-        sudo git clone "${{ inputs.repo-src }}".git
+        #sudo git clone "${{ inputs.repo-src }}".git
+        sudo git clone https://aur.archlinux.org/firefox-kde-opensuse.git
         sudo git config --global user.name "${{ inputs.gitlab-user }}" 
         sudo git config --global user.email "${{ inputs.user-mail }}"
         echo "PKG=${PKG}" >> $GITHUB_ENV
