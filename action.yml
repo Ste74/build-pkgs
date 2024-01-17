@@ -172,8 +172,8 @@ runs:
           gpg --batch --import gpg.key
         fi
         #sudo chrootbuild -p ${{ env.PKG }} -b ${{ inputs.branch }} -GH
-        echo $PWD
-        echo ls
+        sudo echo $PWD
+        sudo ls
         sudo chrootbuild -p $PKG1 -p $PKG -b ${{ inputs.branch }} -GHn
         for p in $(find $PWD -maxdepth 1 -regex '.*\.pkg\.tar\.\(xz\|zst\)'); do
           echo "## signing $p"
