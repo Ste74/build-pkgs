@@ -134,6 +134,7 @@ runs:
         sudo git clone https://aur.archlinux.org/firefox-kde-opensuse.git
         sudo git config --global user.name "${{ inputs.gitlab-user }}" 
         sudo git config --global user.email "${{ inputs.user-mail }}"
+        echo "PKG=${PKG1}" >> $GITHUB_ENV
         echo "PKG=${PKG}" >> $GITHUB_ENV
         #if [[ "${{ inputs.bump-PKG }}" == "true" ]]; then
           sudo chown -R ${UID}:${UID} ${PKG}
