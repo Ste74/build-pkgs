@@ -174,7 +174,7 @@ runs:
         #sudo chrootbuild -p ${{ env.PKG }} -b ${{ inputs.branch }} -GH
         sudo echo $PWD
         sudo ls
-        sudo chrootbuild -p $PKG1 -p $PKG -b ${{ inputs.branch }} -GHn
+        sudo chrootbuild -p ${{ env.PKG1 }} -p ${{ env.PKG }} -b ${{ inputs.branch }} -GHn
         for p in $(find $PWD -maxdepth 1 -regex '.*\.pkg\.tar\.\(xz\|zst\)'); do
           echo "## signing $p"
           gpg --pinentry-mode loopback --passphrase "${{ inputs.gpg-passphrase }}" --detach-sign ${p}
