@@ -175,6 +175,7 @@ runs:
         sudo echo $PWD
         sudo ls
         sudo sed -i "s/export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=system/export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=none/g" $PWD/firefox-kde-opensuse/PKGBUILD
+        sudo cat $PWD/firefox-kde-opensuse/PKGBUILD
         sudo chrootbuild -p kmozillahelper -p firefox-kde-opensuse -b ${{ inputs.branch }} -GHn
         for p in $(find $PWD -maxdepth 1 -regex '.*\.pkg\.tar\.\(xz\|zst\)'); do
           echo "## signing $p"
