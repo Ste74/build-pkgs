@@ -161,6 +161,9 @@ runs:
         #    rm -rf src
         #    cd ..
         #fi
+    - name: Set make jobs
+      run: |
+        echo "MAKEFLAGS=-j$(nproc)" >> $GITHUB_ENV
     - name: build_pkg
       shell: bash
       run: |
