@@ -175,7 +175,10 @@ runs:
         #sudo chrootbuild -p ${{ env.PKG }} -b ${{ inputs.branch }} -GH
         sudo echo $PWD
         sudo ls
-        #sudo sed -i "s/export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=system/export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=none/g" $PWD/firefox-kde-opensuse/PKGBUILD
+        sudo sed -i "s/export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=system/export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=pip/g" $PWD/firefox-kde-opensuse/PKGBUILD
+        sudo sed -i "s/export MOZ_MAKE_FLAGS="$MAKEFLAGS"/# export MOZ_MAKE_FLAGS="$MAKEFLAGS"/g" $PWD/firefox-kde-opensuse/PKGBUILD
+        sudo sed -i "s/export MOZ_SMP_FLAGS="$MAKEFLAGS""/# export MOZ_SMP_FLAGS="$MAKEFLAGS""/g" $PWD/firefox-kde-opensuse/PKGBUILD
+
         sudo cat $PWD/firefox-kde-opensuse/PKGBUILD
         sudo chrootbuild -p kmozillahelper -p firefox-kde-opensuse -b ${{ inputs.branch }} -GHn
         for p in $(find $PWD -maxdepth 1 -regex '.*\.pkg\.tar\.\(xz\|zst\)'); do
