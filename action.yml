@@ -136,7 +136,7 @@ runs:
         sudo git config --global user.email "${{ inputs.user-mail }}"
         echo "PKG=${PKG1}" >> $GITHUB_ENV
         echo "PKG=${PKG}" >> $GITHUB_ENV
-        echo "MAKEFLAGS=-j$(nproc)" >> $GITHUB_ENV
+        echo "MAKEFLAGS=-j2" >> $GITHUB_ENV
         #if [[ "${{ inputs.bump-PKG }}" == "true" ]]; then
           sudo chown -R ${UID}:${UID} ${PKG}
         #  cd ${PKG}
