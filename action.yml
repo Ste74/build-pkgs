@@ -136,7 +136,7 @@ runs:
         sudo git config --global user.email "${{ inputs.user-mail }}"
         echo "PKG=${PKG1}" >> $GITHUB_ENV
         echo "PKG=${PKG}" >> $GITHUB_ENV
-        echo "MAKEFLAGS=-j2" >> $GITHUB_ENV
+        echo "MAKEFLAGS=-j$NPROC" >> $GITHUB_ENV
         #if [[ "${{ inputs.bump-PKG }}" == "true" ]]; then
           sudo chown -R ${UID}:${UID} ${PKG}
         #  cd ${PKG}
@@ -176,8 +176,8 @@ runs:
         sudo echo $PWD
         sudo ls
         sudo sed -i "/export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=system/export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=pip/g" $PWD/firefox-kde-opensuse/PKGBUILD
-        sudo sed -i "/export MOZ_MAKE_FLAGS="$MAKEFLAGS"/d" $PWD/firefox-kde-opensuse/PKGBUILD
-        sudo sed -i "/export MOZ_dSMP_FLAGS="$MAKEFLAGS"/d" $PWD/firefox-kde-opensuse/PKGBUILD
+        #sudo sed -i "/export MOZ_MAKE_FLAGS="$MAKEFLAGS"/d" $PWD/firefox-kde-opensuse/PKGBUILD
+        #sudo sed -i "/export MOZ_dSMP_FLAGS="$MAKEFLAGS"/d" $PWD/firefox-kde-opensuse/PKGBUILD
 
         sudo cat $PWD/firefox-kde-opensuse/PKGBUILD
         sudo chrootbuild -p kmozillahelper -p firefox-kde-opensuse -b ${{ inputs.branch }} -Hn
