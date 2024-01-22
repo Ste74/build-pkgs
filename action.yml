@@ -178,8 +178,8 @@ runs:
         sudo echo $PWD
         sudo ls
         sudo sed -i "s/MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=system/MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=pip/g" $PWD/firefox-kde-opensuse/PKGBUILD
-        sudo sed -i "s/MOZ_MAKE_FLAGS="$MAKEFLAGS"/MOZ_MAKE_FLAGS=${{ inputs.n-job }}/g" $PWD/firefox-kde-opensuse/PKGBUILD
-        sudo sed -i "s/MOZ_SMP_FLAGS="$MAKEFLAGS"/MOZ_SMP_FLAGS=${{ inputs.n-job }}/g" $PWD/firefox-kde-opensuse/PKGBUILD
+        sudo sed -i "s/MOZ_MAKE_FLAGS="$MAKEFLAGS"/MOZ_MAKE_FLAGS="${{ inputs.n-job }}"/g" $PWD/firefox-kde-opensuse/PKGBUILD
+        sudo sed -i "s/MOZ_SMP_FLAGS="$MAKEFLAGS"/MOZ_SMP_FLAGS="${{ inputs.n-job }}"/g" $PWD/firefox-kde-opensuse/PKGBUILD
 
         sudo cat $PWD/firefox-kde-opensuse/PKGBUILD
         sudo chrootbuild -p kmozillahelper -p firefox-kde-opensuse -b ${{ inputs.branch }} -Hn
