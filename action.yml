@@ -123,6 +123,7 @@ runs:
         sudo ./install.sh
         echo 'PACKAGER="${{ inputs.manjaro-user }} <${{ inputs.user-mail }}>"' | sudo tee -a /etc/makepkg.conf > /dev/null
         echo 'GPGKEY="${{ inputs.gpg-key-sign }}"' | sudo tee -a /etc/makepkg.conf > /dev/null
+        echo 'MAKEFLAGS="${{ inputs.n-job }}"' | sudo tee -a /etc/makepkg.conf > /dev/null
         popd
         sudo rm -rf manjaro-chrootbuild
     - id: clone_repo
@@ -178,10 +179,6 @@ runs:
         sudo echo $PWD
         sudo ls
         sudo sed -i "s/MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=system/MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=none/g" $PWD/firefox-kde-opensuse/PKGBUILD
-        #sudo sed -i "s|export MOZ_MAKE_FLAGS="$MAKEFLAGS"|export MOZ_MAKE_FLAGS="${{ inputs.n-job }}"|g" $PWD/firefox-kde-opensuse/PKGBUILD
-        #sudo sed -i "s|export MOZ_SMP_FLAGS="$MAKEFLAGS"|export MOZ_SMP_FLAGS="${{ inputs.n-job }}"|g" $PWD/firefox-kde-opensuse/PKGBUILD
-        MAKEFLAGS="${{ inputs.n-job }}"
-        sudo echo $MAKEFLAGS 
         sudo cat $PWD/firefox-kde-opensuse/PKGBUILD
         sudo chrootbuild -p kmozillahelper -p firefox-kde-opensuse -b ${{ inputs.branch }} -Hn
         for p in $(find $PWD -maxdepth 1 -regex '.*\.pkg\.tar\.\(xz\|zst\)'); do
